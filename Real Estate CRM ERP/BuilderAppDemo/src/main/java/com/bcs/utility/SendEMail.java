@@ -44,8 +44,9 @@ import com.bcs.service.DisbursementService;
 	    final static Logger logger = LoggerFactory.getLogger(SendEMail.class);	
 	         
 	    public SendEMail () {
-	    	   
-	        host = "smtpout.secureserver.net";
+
+	        // SMTP host is env-overridable (MAIL_HOST); legacy default preserved.
+	        host = System.getenv().getOrDefault("MAIL_HOST", "smtpout.secureserver.net");
 	
 	        authenticator = new SMTPAuthenticator ();
 	        properties = System.getProperties ();
@@ -270,8 +271,16 @@ import com.bcs.service.DisbursementService;
 
 	class SMTPAuthenticator extends Authenticator {
 
-    private static final String SMTP_AUTH_USER = "savita@ysmsoftware.com";
-    private static final String SMTP_AUTH_PASSWORD = "savita123";
+    /*
+     * Credentials were previously hardcoded here. They now come from the
+     * environment (MAIL_USERNAME / MAIL_PASSWORD, settable via .env); the
+     * legacy values remain as fallbacks so existing behaviour is unchanged
+     * until real credentials are configured.
+     */
+    private static final String SMTP_AUTH_USER =
+            System.getenv().getOrDefault("MAIL_USERNAME", "savita@ysmsoftware.com");
+    private static final String SMTP_AUTH_PASSWORD =
+            System.getenv().getOrDefault("MAIL_PASSWORD", "savita123");
 
     public PasswordAuthentication getPasswordAuthentication () {
     		String username = SMTP_AUTH_USER;
@@ -279,5 +288,5 @@ import com.bcs.service.DisbursementService;
 
         	return new PasswordAuthentication(username,  password);
     }
-    
+
 }

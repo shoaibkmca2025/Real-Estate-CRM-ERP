@@ -13,9 +13,18 @@ spring:
     # to Spring Data repositories.
     allow-circular-references: true
 
+  # Load a local .env file (KEY=VALUE) when present. Real OS environment
+  # variables (e.g. on Render) always take precedence over .env values.
+  config:
+    import: optional:file:.env[.properties]
+
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/bcs_angular_uat?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${DB_USERNAME:root}
+    # Either supply a full DB_URL (used on Render), or the parts below
+    # (DB_HOST/DB_PORT/DB_NAME/DB_SSL) — typically via .env for Aiven.
+    # DB_SSL=true enforces TLS (Aiven requires it). Certificate identity
+    # verification stays off — equivalent to sslMode=REQUIRED, no CA needed.
+    url: ${DB_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:bcs_angular_uat}?useSSL=${DB_SSL:false}&requireSSL=${DB_SSL:false}&verifyServerCertificate=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USER:${DB_USERNAME:root}}
     password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:

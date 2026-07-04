@@ -6,14 +6,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
  
 public class SendSMS {
-	
+
+	/*
+	 * The Textlocal API key was previously hardcoded; it now comes from the
+	 * TEXTLOCAL_API_KEY environment variable (settable via .env), with the
+	 * legacy key as fallback so behaviour is unchanged until rotated.
+	 */
+	private static final String TEXTLOCAL_API_KEY =
+			System.getenv().getOrDefault("TEXTLOCAL_API_KEY", "nxx7z0o2zTU-3LQ6A5bfqGBhb46RQ6hRCjYSEKzv6C");
+
 	public static String sendSms(String mobileNos, String textMessage) {
 		try {
-			
+
 			System.out.println("mobileNos: "+mobileNos);
 			System.out.println("textMessage: "+textMessage);
 			// Construct data
-			String apiKey = "apikey=" + "nxx7z0o2zTU-3LQ6A5bfqGBhb46RQ6hRCjYSEKzv6C";
+			String apiKey = "apikey=" + TEXTLOCAL_API_KEY;
 			String message = "&message=" +textMessage;
 			String sender = "&sender=" + "TXTLCL";
 			String numbers = "&numbers=" + mobileNos;
