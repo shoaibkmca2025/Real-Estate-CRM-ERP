@@ -55,7 +55,8 @@ spring:
       mail.smtp.starttls.enable: true
 
 server:
-  port: ${SERVER_PORT:8080}
+  # PORT is injected by cloud hosts (Render); SERVER_PORT is used locally.
+  port: ${PORT:${SERVER_PORT:8080}}
 
 # Application-specific settings
 app:

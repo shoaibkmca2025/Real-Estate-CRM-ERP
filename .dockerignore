@@ -1,0 +1,11 @@
+# Keep the Docker build context small — only the backend sources are needed.
+.git
+frontend-react
+db-export
+**/node_modules
+**/target
+**/dist
+*.log
+*.sql
+!**/db/migration/*.sql
+.DS_Store

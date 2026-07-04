@@ -1,0 +1,25 @@
+# --- Node / frontend ---------------------------------------------------------
+node_modules/
+dist/
+*.tsbuildinfo
+
+# --- Java / Maven ------------------------------------------------------------
+target/
+*.class
+
+# --- Database exports (never push data/credentials to GitHub) ----------------
+db-export/
+
+# --- IDE / OS ----------------------------------------------------------------
+.settings/
+.classpath
+.project
+.factorypath
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- Logs / uploads ----------------------------------------------------------
+*.log
+uploads/
