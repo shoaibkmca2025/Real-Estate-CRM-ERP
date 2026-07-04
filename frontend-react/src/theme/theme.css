@@ -1,0 +1,389 @@
+/* ============================================================================
+   Real Estate CRM — Refreshed theme
+   Keeps the SAME layout as the legacy AngularJS app (fixed top navbar, fixed
+   left sidebar, offset content area) but with a modern, more attractive
+   color palette, softer shadows, rounded cards and polished controls.
+   ========================================================================== */
+
+:root {
+  /* Brand palette (refreshed from the old #428BCA blue) */
+  --rc-primary: #2563eb;
+  --rc-primary-dark: #1d4ed8;
+  --rc-primary-light: #3b82f6;
+  --rc-accent: #06b6d4;
+
+  --rc-success: #10b981;
+  --rc-danger: #ef4444;
+  --rc-warning: #f59e0b;
+  --rc-info: #0ea5e9;
+
+  /* Sidebar / navbar surfaces */
+  --rc-sidebar-bg-top: #0f172a;
+  --rc-sidebar-bg-bottom: #1e293b;
+  --rc-sidebar-text: #cbd5e1;
+  --rc-sidebar-text-active: #ffffff;
+  --rc-navbar-bg: #ffffff;
+
+  /* Page surfaces */
+  --rc-body-bg: #f1f5f9;
+  --rc-card-bg: #ffffff;
+  --rc-border: #e2e8f0;
+  --rc-text: #1e293b;
+  --rc-text-muted: #64748b;
+
+  --rc-sidebar-width: 240px;
+  --rc-navbar-height: 60px;
+  --rc-radius: 12px;
+  --rc-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --rc-shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.12);
+
+  --bs-primary: var(--rc-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--rc-body-bg);
+  color: var(--rc-text);
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ----- Helper / legacy-compatible color classes (mirrors old markup) ------ */
+.blue { color: var(--rc-primary) !important; }
+.green { color: var(--rc-success) !important; }
+.red { color: var(--rc-danger) !important; }
+.white { color: #fff !important; }
+.text-muted { color: var(--rc-text-muted) !important; }
+
+/* ============================ Buttons ===================================== */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.btn-rounded {
+  border-radius: 50px;
+}
+.btn-primary {
+  background-color: var(--rc-primary);
+  border-color: var(--rc-primary);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--rc-primary-dark);
+  border-color: var(--rc-primary-dark);
+}
+.btn-outline {
+  background: transparent;
+}
+
+/* ============================ Cards / widgets ============================= */
+.rc-card,
+.widget-box {
+  background: var(--rc-card-bg);
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius);
+  box-shadow: var(--rc-shadow);
+}
+.rc-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.rc-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--rc-text);
+}
+
+/* ============================ App shell layout =========================== */
+.app-shell {
+  min-height: 100vh;
+}
+
+/* ---- Top navbar ---- */
+.topnav-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--rc-navbar-height);
+  background: var(--rc-navbar-bg);
+  border-bottom: 1px solid var(--rc-border);
+  box-shadow: var(--rc-shadow);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1030;
+}
+.topnav-navbar .navbar-brand {
+  font-weight: 700;
+  color: var(--rc-primary) !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topnav-navbar .topnav-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.topnav-spacer {
+  flex: 1;
+}
+.topnav-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.topnav-icon-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--rc-text-muted);
+  font-size: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.topnav-icon-btn:hover {
+  background: var(--rc-body-bg);
+  color: var(--rc-primary);
+}
+.badge-red {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--rc-danger);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  padding: 0 4px;
+}
+.notification-header {
+  background: #eff6ff;
+  color: var(--rc-primary-dark);
+  padding: 10px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--rc-border);
+}
+.dropdown-messages a {
+  display: block;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rc-border);
+  color: var(--rc-text);
+}
+.dropdown-messages a:hover {
+  background: var(--rc-body-bg);
+}
+.msg-time {
+  font-size: 12px;
+  color: var(--rc-text-muted);
+}
+
+/* ---- Left sidebar ---- */
+.app-sidebar {
+  position: fixed;
+  top: var(--rc-navbar-height);
+  bottom: 0;
+  left: 0;
+  width: var(--rc-sidebar-width);
+  background: linear-gradient(180deg, var(--rc-sidebar-bg-top), var(--rc-sidebar-bg-bottom));
+  overflow-y: auto;
+  z-index: 1020;
+  padding: 12px 0;
+}
+.nav-sidebar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-sidebar > li > a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  color: var(--rc-sidebar-text);
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+}
+.nav-sidebar > li > a .menu-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+.nav-sidebar > li > a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--rc-sidebar-text-active);
+}
+.nav-sidebar > li.active > a {
+  background: rgba(37, 99, 235, 0.18);
+  color: var(--rc-sidebar-text-active);
+  border-left-color: var(--rc-primary-light);
+}
+
+/* ---- Content area ---- */
+.app-content {
+  margin-left: var(--rc-sidebar-width);
+  margin-top: var(--rc-navbar-height);
+  padding: 24px;
+  min-height: calc(100vh - var(--rc-navbar-height));
+}
+
+@media (max-width: 992px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+  .app-content {
+    margin-left: 0;
+  }
+}
+
+/* ============================ Tables ===================================== */
+.data-table .table {
+  background: var(--rc-card-bg);
+  border-radius: var(--rc-radius);
+  overflow: hidden;
+}
+.table > thead th {
+  background: #f8fafc;
+  color: var(--rc-text-muted);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--rc-border);
+}
+.sort-icon {
+  cursor: pointer;
+  font-size: 11px;
+}
+
+/* ============================ Login page ================================= */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 55%, #06b6d4 100%);
+  padding: 20px;
+}
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: var(--rc-shadow-lg);
+  padding: 36px 32px;
+}
+.login-card h4 {
+  font-weight: 700;
+  color: var(--rc-text);
+}
+.login-brand {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.login-brand img {
+  max-height: 64px;
+}
+
+/* ============================ Misc ====================================== */
+.input-error {
+  border-color: var(--rc-danger) !important;
+}
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.disabledAnchor {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.label {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 11px;
+  border-radius: 0.4em;
+  color: #fff;
+}
+.label-success { background: var(--rc-success); }
+.label-danger { background: var(--rc-danger); }
+.label-info { background: var(--rc-info); }
+.label-default { background: var(--rc-text-muted); }
+
+/* ============================ Dashboard info boxes ====================== */
+.info-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border-radius: var(--rc-radius);
+  color: #fff;
+  box-shadow: var(--rc-shadow);
+  transition: transform 0.15s ease;
+}
+.info-box:hover {
+  transform: translateY(-2px);
+}
+.info-box-icon {
+  font-size: 26px;
+  opacity: 0.85;
+}
+.info-box-text {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+.info-box-number {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.bg-cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+.bg-pink { background: linear-gradient(135deg, #ec4899, #db2777); }
+.bg-light-green { background: linear-gradient(135deg, #34d399, #10b981); }
+.bg-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.bg-yellow-green { background: linear-gradient(135deg, #84cc16, #65a30d); }
+
+/* ============================ Chart panels ============================== */
+.rc-panel-title {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 12px;
+  margin: -20px -20px 16px;
+  border-top-left-radius: var(--rc-radius);
+  border-top-right-radius: var(--rc-radius);
+  color: #fff;
+}
+.rc-panel-danger { background: var(--rc-danger); }
+.rc-panel-warning { background: var(--rc-warning); }
+.rc-panel-info { background: var(--rc-info); }
+.rc-panel-success { background: var(--rc-success); }
+.rc-panel-primary { background: var(--rc-primary); }

@@ -1,0 +1,79 @@
+# ============================================================================
+# Real Estate CRM/ERP — Spring Boot 3 configuration
+# All secrets are externalized via environment variables (no hardcoded creds).
+# ============================================================================
+spring:
+  application:
+    name: builder-app
+
+  main:
+    # The transitional Hibernate SessionFactory bean (unwrapped from the JPA
+    # EntityManagerFactory to keep the legacy DAOs working) forms a bean cycle
+    # with Spring Boot's JPA auto-config. Allow it until the DAOs are migrated
+    # to Spring Data repositories.
+    allow-circular-references: true
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/bcs_angular_uat?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX:50}
+      minimum-idle: ${DB_POOL_MIN:10}
+      connection-timeout: 10000
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none          # schema owned by Flyway, never auto-generated
+    properties:
+      hibernate:
+        # dialect is auto-detected by Hibernate 6 (MySQL 8) — no need to set it.
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    show-sql: false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+# Application-specific settings
+app:
+  cors:
+    # Comma-separated list of allowed SPA origins (replaces the old allowedOrigins("*"))
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173}
+  jwt:
+    # Base64 secret — MUST be overridden in every environment (>= 256-bit)
+    secret: ${JWT_SECRET:change-me-to-a-long-random-base64-secret-at-least-32-bytes-please}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}   # 24h
+  files:
+    upload-location: ${FILE_UPLOAD_LOCATION:./uploads}
+
+logging:
+  level:
+    org.hibernate.SQL: ${SQL_LOG_LEVEL:INFO}
+    com.bcs: ${APP_LOG_LEVEL:INFO}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

@@ -1,0 +1,17 @@
+-- ============================================================================
+-- Flyway baseline (V1)
+--
+-- The existing production/UAT database (bcs_angular_uat) already contains the
+-- full schema, created originally by Hibernate's ddl auto-generation. Because
+-- `spring.flyway.baseline-on-migrate=true`, Flyway marks the current schema as
+-- baselined at version 1 on first run and does NOT execute this file against a
+-- non-empty database — so it is intentionally a no-op placeholder.
+--
+-- Going forward, evolve the schema with ordered migrations: V2__*.sql, V3__*.sql
+-- (e.g. V2__add_index_client_project.sql). Never edit an already-applied file.
+--
+-- To generate a real baseline DDL from the current DB, run:
+--   mysqldump --no-data --skip-comments bcs_angular_uat > V1__baseline.sql
+-- (only useful when standing the app up against a fresh, empty database).
+-- ============================================================================
+SELECT 1;
