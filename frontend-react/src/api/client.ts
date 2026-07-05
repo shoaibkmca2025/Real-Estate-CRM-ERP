@@ -29,6 +29,12 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 401 || error.response?.status === 403) {
+      // Diagnostic: names the exact call that invalidated the session
+      // (visible in the browser console via F12).
+      console.error(
+        `[auth] session invalidated by ${error.config?.method?.toUpperCase()} ` +
+          `${error.config?.url} -> HTTP ${error.response.status}`
+      );
       sessionStorage.setItem('sessionInvalid', 'true');
       if (window.location.pathname !== '/login') {
         window.location.href = '/login';

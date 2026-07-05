@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Dropdown } from 'react-bootstrap';
 import { useAuth } from '../../context/AuthContext';
@@ -33,6 +34,9 @@ export default function TopNavbar({
   const { session, signOut } = useAuth();
   const navigate = useNavigate();
   const isAdminUser = session?.userType === 2 || session?.userType === 3;
+  // Company logos may point at an unreachable legacy file server; fall back
+  // to the company name if the image cannot load.
+  const [logoFailed, setLogoFailed] = useState(false);
 
   const handleLogout = async () => {
     if (session) await logoutApi(session.userId);
@@ -47,8 +51,13 @@ export default function TopNavbar({
       </button>
 
       <a className="navbar-brand" href={session?.websiteAddress || '#'}>
-        {session?.logoPath ? (
-          <img src={session.logoPath} alt="logo" style={{ height: 36 }} />
+        {session?.logoPath && !logoFailed ? (
+          <img
+            src={session.logoPath}
+            alt="logo"
+            style={{ height: 36 }}
+            onError={() => setLogoFailed(true)}
+          />
         ) : (
           <span>{session?.companyName || 'Real Estate CRM'}</span>
         )}
