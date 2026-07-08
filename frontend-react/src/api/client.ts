@@ -23,21 +23,30 @@ apiClient.interceptors.request.use((config) => {
 });
 
 // --- Response interceptor: centralised error handling --------------------
-// Mirrors the old behaviour where a network / session failure redirected
-// the user back to the login page ("session invalid").
+// On a genuine auth failure (401/403) we must CLEAR the stored token + session
+// before redirecting — otherwise the guard still sees a session, sends the user
+// back into the app, the stale token 401s again, and the app "repeatedly logs
+// out" in a loop between the dashboard and the login page.
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401 || error.response?.status === 403) {
-      // Diagnostic: names the exact call that invalidated the session
-      // (visible in the browser console via F12).
-      console.error(
-        `[auth] session invalidated by ${error.config?.method?.toUpperCase()} ` +
-          `${error.config?.url} -> HTTP ${error.response.status}`
-      );
+    const status = error.response?.status;
+    const url = error.config?.url ?? '';
+    // The auth endpoints legitimately return 401 (e.g. wrong password) — a
+    // failed login must NOT trigger the global "session invalid" logout.
+    const isAuthEndpoint = /loginWebService|forgotPassword|addLoginDetails/.test(url);
+
+    if ((status === 401 || status === 403) && !isAuthEndpoint) {
+      // Diagnostic (browser console, F12): names the call that failed auth.
+      console.error(`[auth] session invalidated by ${error.config?.method?.toUpperCase()} ${url} -> HTTP ${status}`);
+
+      // Wipe auth state so the guard stops treating the user as logged in and
+      // no stale token is reused. rc_remember lives in localStorage and survives.
+      sessionStorage.clear();
       sessionStorage.setItem('sessionInvalid', 'true');
+
       if (window.location.pathname !== '/login') {
-        window.location.href = '/login';
+        window.location.replace('/login');
       }
     }
     return Promise.reject(error);
